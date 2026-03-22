@@ -1,0 +1,507 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NANAWAX — Maison de Mode Africaine</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Didact+Gothic&family=Cinzel:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="nanawax-luxury.css">
+</head>
+<body>
+
+<!-- CURSOR -->
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- LANG BAR -->
+<div class="lang-bar">
+  <span class="lang-msg" id="lang-msg">Livraison disponible à Abidjan · Cotonou · Dakar · Paris</span>
+  <div class="lang-btns">
+    <button class="lang-btn active" onclick="setLang('fr')">FR</button>
+    <button class="lang-btn" onclick="setLang('en')">EN</button>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav id="main-nav">
+  <a class="nav-logo" onclick="go('home')" aria-label="NANAWAX">
+    <img class="nav-logo-img" src="ITC_nanawax.png" alt="NANAWAX">
+  </a>
+  <div class="nav-center">
+    <button class="nav-link active" id="nl-home" onclick="go('home')" data-fr="Accueil" data-en="Home">Accueil</button>
+    <button class="nav-link" id="nl-boutique" onclick="go('boutique')" data-fr="Boutique" data-en="Shop">Boutique</button>
+    <button class="nav-link" id="nl-lookbook" onclick="go('lookbook')" data-fr="Lookbook" data-en="Lookbook">Lookbook</button>
+    <button class="nav-link" id="nl-about" onclick="go('about')" data-fr="Notre Histoire" data-en="Our Story">Notre Histoire</button>
+    <button class="nav-link" id="nl-blog" onclick="go('blog')" data-fr="Journal" data-en="Journal">Journal</button>
+  </div>
+  <div class="nav-right">
+    <button class="nav-icon" title="Search" aria-label="Rechercher" type="button" onclick="openSearch()">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <circle cx="11" cy="11" r="6.5"></circle>
+        <path d="M16.2 16.2 L21 21"></path>
+      </svg>
+    </button>
+    <div class="wish-wrap">
+      <button class="nav-icon" title="Wishlist" aria-label="Favoris" type="button" onclick="toggleWishDrawer()">♡</button>
+      <div class="wish-dot" id="wish-count" style="display:none">0</div>
+    </div>
+    <div class="cart-wrap">
+      <button class="nav-icon" onclick="toggleCart()">🛍</button>
+      <div class="cart-dot" id="cart-count">0</div>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════════════ PAGE: HOME ═══════════════ -->
+<div id="page-home" class="page active">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-left">
+      <p class="hero-eyebrow" id="h-eyebrow">Collection Printemps — Été 2025</p>
+      <h1 class="hero-title" id="h-title1">L'Afrique</h1>
+      <p class="hero-subtitle" id="h-title2">sublimée.</p>
+      <p class="hero-desc" id="h-desc">Prêt-à-porter de luxe né du wax et de la richesse culturelle africaine. Des pièces intemporelles pour la femme africaine contemporaine.</p>
+      <div class="hero-actions">
+        <button class="btn-gold" onclick="go('boutique')"><span id="h-cta1">Découvrir la Collection</span></button>
+        <button class="btn-ghost" onclick="go('lookbook')" id="h-cta2">Voir le Lookbook</button>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-bg-right"></div>
+      <div class="hero-pattern-overlay"></div>
+      <!-- HERO PRODUCT SHOWCASE -->
+      <div class="hero-showcase">
+        <!-- Slide counter -->
+        <div class="hsc-counter">
+          <span id="hsc-cur">01</span>
+          <span class="hsc-sep"></span>
+          <span id="hsc-tot">04</span>
+        </div>
+        <!-- Cards -->
+        <div class="hsc-track" id="hsc-track"></div>
+        <!-- Dots -->
+        <div class="hsc-dots" id="hsc-dots"></div>
+        <!-- Nav arrows -->
+        <button class="hsc-arrow hsc-prev" onclick="hscMove(-1)">←</button>
+        <button class="hsc-arrow hsc-next" onclick="hscMove(1)">→</button>
+      </div>
+    </div>
+    <div class="hero-scroll" onclick="document.getElementById('ribbon').scrollIntoView({behavior:'smooth'})">
+      <span class="hero-scroll-line"></span>
+      <span id="h-scroll">Défiler</span>
+    </div>
+  </section>
+
+  <!-- RIBBON -->
+  <div class="ribbon" id="ribbon">
+    <div class="ribbon-track" id="ribbon-track">
+      <!-- filled by JS -->
+    </div>
+  </div>
+
+  <!-- FEATURED PRODUCTS -->
+  <section class="products-section">
+    <div class="s-head">
+      <p class="s-eyebrow" id="s-new-eyebrow">Nouveautés</p>
+      <h2 class="s-title" id="s-new-title">Pièces <em>Signature</em></h2>
+      <div class="s-rule"></div>
+    </div>
+    <div class="cats" id="home-cats">
+      <button class="cat active" onclick="filterHome('all',this)" data-fr="Tout voir" data-en="All">Tout voir</button>
+      <button class="cat" onclick="filterHome('robes',this)" data-fr="Robes" data-en="Dresses">Robes</button>
+      <button class="cat" onclick="filterHome('hauts',this)" data-fr="Hauts" data-en="Tops">Hauts</button>
+      <button class="cat" onclick="filterHome('ensembles',this)" data-fr="Ensembles" data-en="Sets">Ensembles</button>
+      <button class="cat" onclick="filterHome('accessoires',this)" data-fr="Accessoires" data-en="Accessories">Accessoires</button>
+    </div>
+    <div class="products-grid" id="home-products"></div>
+    <div style="text-align:center;margin-top:3rem">
+      <button class="btn-ghost" onclick="go('boutique')" id="see-all-btn">Voir toute la collection →</button>
+    </div>
+  </section>
+
+  <!-- EDITORIAL STRIP -->
+  <section style="padding:0 3.5rem 5rem;max-width:1440px;margin:0 auto">
+    <div class="editorial">
+      <div class="edit-item">
+        <div class="edit-bg w1" style="height:100%"></div>
+        <div class="edit-overlay">
+          <p class="edit-tag" data-fr="Collection" data-en="Collection">Collection</p>
+          <h3 class="edit-name" id="ed1">Été Sahel</h3>
+          <p class="edit-action" id="ed1-a">Voir la série →</p>
+        </div>
+      </div>
+      <div class="edit-item">
+        <div class="edit-bg w2" style="height:100%"></div>
+        <div class="edit-overlay">
+          <p class="edit-tag">Lookbook 2025</p>
+          <h3 class="edit-name" id="ed2">Abidjan, Nuit Dorée</h3>
+          <p class="edit-action" id="ed2-a">Explorer →</p>
+        </div>
+      </div>
+      <div class="edit-item">
+        <div class="edit-bg w3" style="height:100%"></div>
+        <div class="edit-overlay">
+          <p class="edit-tag">Exclusivité</p>
+          <h3 class="edit-name" id="ed3">Forêt Sacrée</h3>
+          <p class="edit-action" id="ed3-a">Découvrir →</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEWSLETTER -->
+  <div class="nl">
+    <h2 id="nl-title">Rejoignez la maison <em>Nanawax</em></h2>
+    <p id="nl-sub">Nouveautés, inspirations et offres exclusives réservées à nos membres</p>
+    <div class="nl-form">
+      <input class="nl-input" id="nl-input" placeholder="Votre adresse e-mail">
+      <button class="nl-btn" id="nl-btn-text">S'abonner</button>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="f-grid">
+      <div>
+        <div class="f-brand-name">NANAWAX</div>
+        <p class="f-tagline" id="f-tag">Maison de mode africaine fondée en 2012. L'excellence du wax réinventée pour la femme contemporaine.</p>
+        <div class="f-socials">
+          <div class="f-soc">ig</div>
+          <div class="f-soc">fb</div>
+          <div class="f-soc">tw</div>
+          <div class="f-soc">yt</div>
+        </div>
+      </div>
+      <div class="f-col">
+        <h4 id="f-h1">Boutique</h4>
+        <ul>
+          <li><a onclick="go('boutique')" id="f-new">Nouveautés</a></li>
+          <li><a id="f-dresses">Robes</a></li>
+          <li><a id="f-sets">Ensembles</a></li>
+          <li><a id="f-acc">Accessoires</a></li>
+          <li><a id="f-promo">Promotions</a></li>
+        </ul>
+      </div>
+      <div class="f-col">
+        <h4 id="f-h2">Service</h4>
+        <ul>
+          <li><a id="f-size">Guide des tailles</a></li>
+          <li><a id="f-ship">Livraison</a></li>
+          <li><a id="f-ret">Retours</a></li>
+          <li><a id="f-contact">Contact</a></li>
+          <li><a id="f-faq">FAQ</a></li>
+        </ul>
+      </div>
+      <div class="f-col">
+        <h4 id="f-h3">Maison</h4>
+        <ul>
+          <li><a onclick="go('about')" id="f-story">Notre Histoire</a></li>
+          <li><a onclick="go('lookbook')" id="f-look">Lookbook</a></li>
+          <li><a onclick="go('blog')" id="f-journal">Journal</a></li>
+          <li><a id="f-press">Presse</a></li>
+          <li><a id="f-stores">Boutiques</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="f-bottom">
+      <span id="f-copy">© 2025 Nanawax. Tous droits réservés.</span>
+      <span>Abidjan · Cotonou · Dakar · Paris</span>
+    </div>
+  </footer>
+</div>
+
+<!-- ═══════════════ PAGE: BOUTIQUE ═══════════════ -->
+<div id="page-boutique" class="page">
+  <div style="background:var(--champagne);padding:3rem 3.5rem 2.5rem;border-bottom:1px solid var(--border-gold)">
+    <p class="s-eyebrow" style="justify-content:flex-start;margin-bottom:.6rem" id="bq-eyebrow">Collection 2025</p>
+    <h1 style="font-family:'Playfair Display',serif;font-size:3rem;font-weight:400;color:var(--ink)" id="bq-title">Boutique</h1>
+  </div>
+  <section class="products-section">
+    <div class="cats" id="boutique-cats">
+      <button class="cat active" onclick="filterBoutique('all',this)" data-fr="Tout (24)" data-en="All (24)">Tout (24)</button>
+      <button class="cat" onclick="filterBoutique('robes',this)" data-fr="Robes" data-en="Dresses">Robes</button>
+      <button class="cat" onclick="filterBoutique('hauts',this)" data-fr="Hauts" data-en="Tops">Hauts</button>
+      <button class="cat" onclick="filterBoutique('ensembles',this)" data-fr="Ensembles" data-en="Sets">Ensembles</button>
+      <button class="cat" onclick="filterBoutique('accessoires',this)" data-fr="Accessoires" data-en="Accessories">Accessoires</button>
+      <button class="cat" onclick="filterBoutique('homme',this)" data-fr="Homme" data-en="Men">Homme</button>
+    </div>
+    <div class="products-grid" id="boutique-products"></div>
+  </section>
+  <footer style="background:var(--ink2)">
+    <div class="f-bottom" style="border-top:1px solid rgba(201,168,76,.15);color:rgba(213,194,168,.4)">
+      <span>© 2025 Nanawax</span><span>Abidjan · Cotonou · Dakar · Paris</span>
+    </div>
+  </footer>
+</div>
+
+<!-- ═══════════════ PAGE: PRODUCT ═══════════════ -->
+<div id="page-product" class="page">
+  <div class="breadcrumb">
+    <span onclick="go('home')" id="bc-home">Accueil</span>
+    <i>›</i>
+    <span onclick="go('boutique')" id="bc-shop">Boutique</span>
+    <i>›</i>
+    <span id="bc-name" style="color:var(--ink)">—</span>
+  </div>
+  <div class="pd-wrap">
+    <div class="pd-gallery">
+      <div class="pd-main" id="pd-main-img"></div>
+      <div class="pd-thumbs" id="pd-thumbs"></div>
+    </div>
+    <div class="pd-info">
+      <p class="pd-house">Nanawax</p>
+      <h1 class="pd-name" id="pd-name">—</h1>
+      <div class="pd-price-row">
+        <span class="pd-price" id="pd-price">—</span>
+        <span class="pd-price-old" id="pd-old"></span>
+      </div>
+      <p class="pd-desc" id="pd-desc">—</p>
+      <p class="pd-size-label"><span id="pd-sz-label">Taille</span><a id="pd-guide">Guide des tailles</a></p>
+      <div class="pd-sizes" id="pd-sizes">
+        <button class="sz" onclick="selSz(this)">XS</button>
+        <button class="sz active" onclick="selSz(this)">S</button>
+        <button class="sz" onclick="selSz(this)">M</button>
+        <button class="sz" onclick="selSz(this)">L</button>
+        <button class="sz" onclick="selSz(this)">XL</button>
+        <button class="sz out" disabled>XXL</button>
+      </div>
+      <div class="pd-actions">
+        <button class="pd-add" onclick="addCurrent()"><span id="pd-add-label">Ajouter au panier</span></button>
+        <button class="pd-wish">♡</button>
+      </div>
+      <div class="pd-feats">
+        <div class="pd-feat"><span class="pd-feat-icon">✦</span><span id="pf1">Tissu wax 100% coton premium certifié</span></div>
+        <div class="pd-feat"><span class="pd-feat-icon">✈</span><span id="pf2">Livraison Abidjan en 24–48h</span></div>
+        <div class="pd-feat"><span class="pd-feat-icon">↩</span><span id="pf3">Retours gratuits sous 14 jours</span></div>
+        <div class="pd-feat"><span class="pd-feat-icon">⊕</span><span id="pf4">Sur-mesure disponible sur commande</span></div>
+      </div>
+    </div>
+  </div>
+  <footer style="background:var(--ink2)">
+    <div class="f-bottom" style="border-top:1px solid rgba(201,168,76,.15);color:rgba(213,194,168,.4)">
+      <span>© 2025 Nanawax</span>
+    </div>
+  </footer>
+</div>
+
+<!-- ═══════════════ PAGE: LOOKBOOK ═══════════════ -->
+<div id="page-lookbook" class="page">
+  <div class="lb-hero">
+    <div>
+      <p class="s-eyebrow" id="lb-eyebrow" style="justify-content:center">Nanawax Studio</p>
+      <h1><em id="lb-title">Lookbook</em> 2025</h1>
+      <p id="lb-sub">L'art du wax en images — chaque tissu raconte une histoire</p>
+    </div>
+  </div>
+  <section style="padding:4rem 0 5rem">
+    <div class="lookbook-masonry" id="lb-grid"></div>
+  </section>
+  <footer style="background:var(--ink2)">
+    <div class="f-bottom" style="border-top:1px solid rgba(201,168,76,.15);color:rgba(213,194,168,.4)">
+      <span>© 2025 Nanawax</span>
+    </div>
+  </footer>
+</div>
+
+<!-- ═══════════════ PAGE: ABOUT ═══════════════ -->
+<div id="page-about" class="page">
+  <div class="about-page-hero">
+    <div>
+      <p class="s-eyebrow" id="ab-eyebrow">Fondée en 2012 à Cotonou</p>
+      <h1 id="ab-h1">Notre<br><em>Histoire</em></h1>
+      <p id="ab-sub">De Cotonou au monde, l'épopée d'une marque africaine de luxe</p>
+    </div>
+  </div>
+  <!-- FOUNDER -->
+  <section class="about-wrap">
+    <div class="about-img-col">
+      <div class="about-deco-corner tl"></div>
+      <div class="about-deco-corner br"></div>
+      <div class="about-img-inner">
+        <div class="about-quote" id="a-quote">"Le wax est notre héritage,<br>le luxe notre langage."</div>
+        <div class="about-sig">— Maureen Ayité, Fondatrice</div>
+      </div>
+    </div>
+    <div class="about-text-col">
+      <p class="s-eyebrow" style="justify-content:flex-start" id="a-eyebrow">Notre Fondatrice</p>
+      <h2 id="a-title">Née d'une passion,<br><em>portée par un continent</em></h2>
+      <p id="a-p1">Maureen Ayité, franco-Béninoise autodidacte, a fondé Nanawax en 2012 depuis Cotonou. Un groupe Facebook, des milliers de messages, une vision : démocratiser le luxe africain.</p>
+      <p id="a-p2">En hommage aux légendaires <em>Nana Benz</em> du Togo, Nanawax est devenue l'une des marques prêt-à-porter africaines les plus influentes — présente à Abidjan, Cotonou, Dakar et Paris.</p>
+      <div class="about-stats">
+        <div><div class="stat-n">12</div><div class="stat-l" id="st1">Ans d'histoire</div></div>
+        <div><div class="stat-n">5K+</div><div class="stat-l" id="st2">Pièces / mois</div></div>
+        <div><div class="stat-n">240K</div><div class="stat-l" id="st3">Abonnés</div></div>
+        <div><div class="stat-n">#17</div><div class="stat-l" id="st4">Marques Afrique</div></div>
+      </div>
+    </div>
+  </section>
+  <section style="padding:5rem 3.5rem">
+    <div class="about-wrap" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center">
+      <div>
+        <p class="s-eyebrow" style="justify-content:flex-start" id="ab2-eyebrow">L'Origine</p>
+        <h2 style="font-family:'Playfair Display',serif;font-size:2.5rem;font-weight:400;line-height:1.15;margin-bottom:1.8rem;color:var(--ink)" id="ab2-title">Des Nana Benz<br><em style="font-style:italic;color:var(--terracotta2)">à Nanawax</em></h2>
+        <p style="font-size:.88rem;line-height:1.9;color:var(--muted);margin-bottom:1.2rem" id="ab2-p1">Tout a commencé sur Facebook. Maureen Ayité publiait ses créations en wax dans un groupe, et des milliers de personnes lui ont demandé où acheter ces pièces. C'est là que Nanawax est née.</p>
+        <p style="font-size:.88rem;line-height:1.9;color:var(--muted)" id="ab2-p2">Le nom rend hommage aux Nana Benz, ces femmes d'affaires togolaises qui ont bâti des empires dans le commerce du wax hollandais.</p>
+      </div>
+      <div style="background:var(--about-bg);aspect-ratio:4/5;display:flex;align-items:center;justify-content:center;position:relative">
+        <div style="position:absolute;top:16px;left:16px;width:44px;height:44px;border-top:2px solid rgba(139,62,21,.35);border-left:2px solid rgba(139,62,21,.35)"></div>
+        <div style="position:absolute;bottom:16px;right:16px;width:44px;height:44px;border-bottom:2px solid rgba(139,62,21,.35);border-right:2px solid rgba(139,62,21,.35)"></div>
+        <div style="text-align:center;padding:2rem">
+          <div style="font-family:'Playfair Display',serif;font-size:3.5rem;font-style:italic;color:rgba(78,55,28,.25);line-height:1.2">Maureen<br>Ayité</div>
+          <div style="font-family:'Cinzel',serif;font-size:.7rem;letter-spacing:.3em;color:var(--terracotta2);margin-top:1.5rem">Fondatrice</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section style="background:var(--about-bg);padding:5rem 3.5rem">
+    <div class="s-head">
+      <p class="s-eyebrow" id="ab3-ey" style="color:var(--terracotta2)">Reconnaissances</p>
+      <h2 class="s-title" style="color:var(--ink)" id="ab3-title">Nanawax dans <em>le monde</em></h2>
+      <div class="s-rule"></div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;max-width:900px;margin:0 auto;text-align:center">
+      <div><div style="font-family:'Playfair Display',serif;font-size:3rem;font-weight:400;color:var(--ink)">2015</div><div style="font-size:.68rem;letter-spacing:.15em;color:var(--muted2);margin-top:.4rem;text-transform:uppercase" id="r1">Forbes Afrique<br>30 Talents</div></div>
+      <div><div style="font-family:'Playfair Display',serif;font-size:3rem;font-weight:400;color:var(--ink)">240K</div><div style="font-size:.68rem;letter-spacing:.15em;color:var(--muted2);margin-top:.4rem;text-transform:uppercase" id="r2">Abonnés<br>Instagram</div></div>
+      <div><div style="font-family:'Playfair Display',serif;font-size:3rem;font-weight:400;color:var(--ink)">#17</div><div style="font-size:.68rem;letter-spacing:.15em;color:var(--muted2);margin-top:.4rem;text-transform:uppercase" id="r3">Marques Afrique<br>Préférées</div></div>
+      <div><div style="font-family:'Playfair Display',serif;font-size:3rem;font-weight:400;color:var(--ink)">2022</div><div style="font-size:.68rem;letter-spacing:.15em;color:var(--muted2);margin-top:.4rem;text-transform:uppercase" id="r4">Décoration<br>Ministère FR</div></div>
+    </div>
+  </section>
+  <div class="nl">
+    <h2 id="ab-nl-h">Visitez nos <em>Maisons</em></h2>
+    <p id="ab-nl-p">Abidjan · Cotonou · Dakar · Paris</p>
+    <button class="btn-gold" onclick="go('boutique')" style="margin:0 auto;display:flex;align-items:center"><span id="ab-nl-btn">Boutique en ligne →</span></button>
+  </div>
+  <footer style="background:var(--about-bg)">
+    <div class="f-bottom" style="border-top:1px solid rgba(139,62,21,.18);color:var(--muted2)">
+      <span>© 2025 Nanawax</span><span>Abidjan · Cotonou · Dakar · Paris</span>
+    </div>
+  </footer>
+</div>
+
+<!-- ═══════════════ PAGE: BLOG ═══════════════ -->
+<div id="page-blog" class="page">
+  <div style="padding:3rem 3.5rem 2.5rem;border-bottom:1px solid var(--border-gold);text-align:center">
+    <p class="s-eyebrow" id="bl-eyebrow">Nanawax Éditions</p>
+    <h1 style="font-family:'Playfair Display',serif;font-size:3.5rem;font-weight:400;color:var(--ink)" id="bl-title">Le <em style="font-style:italic;color:var(--gold3)">Journal</em></h1>
+    <p style="color:var(--muted2);font-size:.8rem;margin-top:.8rem;letter-spacing:.1em" id="bl-sub">Mode · Culture · Inspiration · Savoir-faire</p>
+  </div>
+  <section style="padding:4rem 0 5rem">
+    <div class="blog-row" id="blog-grid"></div>
+  </section>
+  <footer style="background:var(--ink2)">
+    <div class="f-bottom" style="border-top:1px solid rgba(201,168,76,.15);color:rgba(213,194,168,.4)">
+      <span>© 2025 Nanawax</span>
+    </div>
+  </footer>
+</div>
+
+<!-- ═══════════════ PAGE: CHECKOUT ═══════════════ -->
+<div id="page-checkout" class="page">
+  <div style="padding:2rem 3.5rem .5rem;border-bottom:1px solid var(--border-gold);display:flex;align-items:center;justify-content:space-between">
+    <div style="font-family:'Cinzel',serif;font-size:1.4rem;letter-spacing:.15em">NANAWAX</div>
+    <div style="font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted2);display:flex;gap:1.5rem">
+      <span style="color:var(--gold)" id="co-s1">1. Informations</span>
+      <span>→</span>
+      <span id="co-s2">2. Livraison</span>
+      <span>→</span>
+      <span id="co-s3">3. Paiement</span>
+    </div>
+  </div>
+  <div class="checkout-wrap">
+    <div>
+      <h2 class="co-h2" id="co-title">Finaliser la commande</h2>
+      <p class="co-section" id="co-info">Informations personnelles</p>
+      <div class="f-row">
+        <div class="f-g"><label class="f-l" id="co-fn">Prénom</label><input class="f-i" placeholder="Aminata"></div>
+        <div class="f-g"><label class="f-l" id="co-ln">Nom</label><input class="f-i" placeholder="Koné"></div>
+      </div>
+      <div class="f-g"><label class="f-l" id="co-em">E-mail</label><input class="f-i" placeholder="email@exemple.com"></div>
+      <div class="f-g"><label class="f-l" id="co-ph">Téléphone</label><input class="f-i" placeholder="+225 07 00 00 00 00"></div>
+      <p class="co-section" id="co-ship">Adresse de livraison</p>
+      <div class="f-g">
+        <label class="f-l" id="co-city">Ville</label>
+        <select class="f-i">
+          <option>Abidjan</option><option>Cotonou</option>
+          <option>Dakar</option><option>Lagos</option>
+          <option>Paris</option><option id="co-other">Autre</option>
+        </select>
+      </div>
+      <div class="f-g"><label class="f-l" id="co-addr">Adresse complète</label><input class="f-i" placeholder="Quartier, Rue..."></div>
+      <p class="co-section" id="co-pay">Paiement</p>
+      <div class="f-g">
+        <label class="f-l" id="co-paymode">Mode de paiement</label>
+        <select class="f-i">
+          <option>Mobile Money (Orange / MTN)</option>
+          <option>Carte bancaire</option>
+          <option>Virement bancaire</option>
+          <option id="co-cod">À la livraison</option>
+        </select>
+      </div>
+      <button class="btn-gold" style="width:100%;margin-top:2rem;padding:1.1rem 0" onclick="confirmOrder()"><span id="co-confirm">Confirmer la commande</span></button>
+    </div>
+    <div class="order-box">
+      <h3 id="co-sum">Votre commande</h3>
+      <div id="co-items"></div>
+      <div class="o-sep"></div>
+      <div class="o-item"><span id="co-sub-l">Sous-total</span><span id="co-subtotal">0 FCFA</span></div>
+      <div class="o-item"><span id="co-ship-l">Livraison</span><span id="co-ship-v">Gratuite</span></div>
+      <div class="o-sep"></div>
+      <div class="o-total"><span id="co-tot-l">Total</span><span id="co-total">0 FCFA</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- CART DRAWER -->
+<div class="cart-bg" id="cart-bg" onclick="toggleCart()"></div>
+<div class="cart-drawer" id="cart-drawer">
+  <div class="cart-head">
+    <h3 id="cd-title">Votre Sélection</h3>
+    <button class="cart-x" onclick="toggleCart()">✕</button>
+  </div>
+  <div class="cart-body" id="cart-body">
+    <p class="cart-empty-msg" id="cd-empty">Votre panier est vide</p>
+  </div>
+  <div id="cart-foot" style="display:none">
+    <div class="cart-foot">
+      <div class="cart-tot">
+        <span id="cd-tot-l">Total</span>
+        <strong id="cd-total">0 FCFA</strong>
+      </div>
+      <button class="btn-gold" style="width:100%;padding:1rem 0;margin-bottom:.6rem" onclick="goCheckout()"><span id="cd-order">Commander</span></button>
+      <button class="btn-ghost" style="width:100%;padding:.85rem 0" onclick="toggleCart()" id="cd-continue">Continuer mes achats</button>
+    </div>
+  </div>
+</div>
+
+<!-- WISHLIST DRAWER -->
+<div class="wish-bg" id="wish-bg" onclick="toggleWishDrawer()"></div>
+<div class="wish-drawer" id="wish-drawer">
+  <div class="cart-head">
+    <h3 id="wish-title">Vos Favoris</h3>
+    <button class="cart-x" onclick="toggleWishDrawer()">✕</button>
+  </div>
+  <div class="cart-body" id="wish-body">
+    <p class="cart-empty-msg" id="wish-empty">Vous n'avez pas encore de favoris</p>
+  </div>
+</div>
+
+<!-- SEARCH MODAL -->
+<div class="search-bg" id="search-bg" onclick="closeSearch()"></div>
+<div class="search-modal" id="search-modal" role="dialog" aria-modal="true" aria-labelledby="search-title">
+  <div class="search-head">
+    <h3 id="search-title">Rechercher</h3>
+    <button class="cart-x" onclick="closeSearch()" aria-label="Fermer">✕</button>
+  </div>
+  <div class="search-body">
+    <input class="search-input" id="search-input" placeholder="Rechercher un article…" oninput="onSearchInput(this.value)">
+    <div class="search-results" id="search-results"></div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script src="nanawax-luxury.js"></script>
+</body>
+</html>
